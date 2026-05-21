@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Métricas de Startups</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #ec4899;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --info-color: #0ea5e9;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --text: #1e293b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            letter-spacing: -1px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .category {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category:nth-child(1) { animation-delay: 0.1s; }
+        .category:nth-child(2) { animation-delay: 0.2s; }
+        .category:nth-child(3) { animation-delay: 0.3s; }
+        .category:nth-child(4) { animation-delay: 0.4s; }
+        .category:nth-child(5) { animation-delay: 0.5s; }
+        .category:nth-child(6) { animation-delay: 0.6s; }
+
+        .category:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2);
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .category:nth-child(1) .category-title {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .category:nth-child(2) .category-title {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+        }
+
+        .category:nth-child(3) .category-title {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+
+        .category:nth-child(4) .category-title {
+            color: var(--success-color);
+            border-bottom-color: var(--success-color);
+        }
+
+        .category:nth-child(5) .category-title {
+            color: var(--info-color);
+            border-bottom-color: var(--info-color);
+        }
+
+        .category:nth-child(6) .category-title {
+            color: #8b5cf6;
+            border-bottom-color: #8b5cf6;
+        }
+
+        .icon {
+            font-size: 1.8rem;
+        }
+
+        .metric {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .metric:hover {
+            background: #f1f5f9;
+            transform: translateX(5px);
+        }
+
+        .category:nth-child(1) .metric {
+            border-left-color: var(--primary-color);
+        }
+
+        .category:nth-child(2) .metric {
+            border-left-color: var(--secondary-color);
+        }
+
+        .category:nth-child(3) .metric {
+            border-left-color: var(--accent-color);
+        }
+
+        .category:nth-child(4) .metric {
+            border-left-color: var(--success-color);
+        }
+
+        .category:nth-child(5) .metric {
+            border-left-color: var(--info-color);
+        }
+
+        .category:nth-child(6) .metric {
+            border-left-color: #8b5cf6;
+        }
+
+        .metric-name {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .metric-desc {
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .metric:last-child {
+            margin-bottom: 0;
+        }
+
+        .grid-6 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .categories {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 20px;
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            background: #f0f4f8;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        .metric:hover .metric-name {
+            color: var(--primary-color);
+        }
+
+        .category:nth-child(1) .metric:hover .metric-name { color: var(--primary-color); }
+        .category:nth-child(2) .metric:hover .metric-name { color: var(--secondary-color); }
+        .category:nth-child(3) .metric:hover .metric-name { color: var(--accent-color); }
+        .category:nth-child(4) .metric:hover .metric-name { color: var(--success-color); }
+        .category:nth-child(5) .metric:hover .metric-name { color: var(--info-color); }
+        .category:nth-child(6) .metric:hover .metric-name { color: #8b5cf6; }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Métricas de Startups</h1>
+            <p>Indicadores clave para medir y monitorear el desempeño de tu negocio</p>
+        </div>
+
+        <div class="categories">
+            <!-- CATEGORÍA 1: INGRESOS -->
+            <div class="category">
+                <div class="category-title">
+                    <span class="icon">💰</span>
+                    <span>Ingresos y Monetización</span>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">MRR</div>
+                    <div class="metric-desc">Ingresos Recurrentes Mensuales. Total de ingresos mensuales de clientes pagos. Indicador de salud de la suscripción.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">ARR</div>
+                    <div class="metric-desc">Ingresos Recurrentes Anuales. MRR × 12. Proyección anual de ingresos recurrentes.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">ARPA</div>
+                    <div class="metric-desc">Ingreso Promedio por Cuenta. MRR / Total de clientes. Identifica clientes de mayor valor.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">TCV</div>
+                    <div class="metric-desc">Valor Total del Contrato. Valor completo de un contrato (único + recurrente). Importa para empresas B2B.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">ACV</div>
+                    <div class="metric-desc">Valor Anual Promedio del Contrato. TCV / años de contrato. Métrica B2B crítica.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Ingresos Diferidos</div>
+                    <div class="metric-desc">Dinero recibido antes de entregar el servicio. Refleja compromiso de clientes futuro.</div>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA 2: VALUACIÓN Y CICLO DE VIDA -->
+            <div class="category">
+                <div class="category-title">
+                    <span class="icon">🔄</span>
+                    <span>Valuación y Ciclo de Vida</span>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">LTV</div>
+                    <div class="metric-desc">Valor de Vida del Cliente. Ganancia neta esperada durante toda la relación. Predice rentabilidad.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">CAC</div>
+                    <div class="metric-desc">Costo de Adquisición de Cliente. Gasto total para adquirir un cliente. CAC < LTV = sano.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Ratio LTV/CAC</div>
+                    <div class="metric-desc">Relación entre valor de vida y costo de adquisición. Meta: >3:1 (gana 3× por cada 1 gastado).</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Payback Period</div>
+                    <div class="metric-desc">Período de Recuperación. Meses para recuperar CAC con ganancia de cliente. Meta: <12 meses.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Facturación</div>
+                    <div class="metric-desc">Ingresos actuales + ingresos diferidos del trimestre anterior. Refleja flujo de caja real.</div>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA 3: ACTIVIDAD Y ENGAGEMENT -->
+            <div class="category">
+                <div class="category-title">
+                    <span class="icon">👥</span>
+                    <span>Actividad y Engagement</span>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">MAU</div>
+                    <div class="metric-desc">Usuarios Activos Mensuales. Cantidad de usuarios únicos activos en un mes. Métrica de escala.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">DAU</div>
+                    <div class="metric-desc">Usuarios Activos Diarios. Cantidad de usuarios únicos activos en un día. Mide engagement.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">DAU/MAU Ratio</div>
+                    <div class="metric-desc">Tasa de Engagement Diario. DAU / MAU. Meta: >0.3 (30% usuarios activos diarios).</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Tasa de Activación</div>
+                    <div class="metric-desc">% de usuarios que toman acción clave. Ejemplo: completar perfil, primer pago. Señal de product-market fit.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Número de Logins</div>
+                    <div class="metric-desc">Veces que usuarios inician sesión al mes. Patrón de uso e intensidad de engagement.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">TAM</div>
+                    <div class="metric-desc">Mercado Total Direccionable. Ingresos potenciales máximos en tu mercado. Define oportunidad de crecimiento.</div>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA 4: RETENCIÓN Y CHURN -->
+            <div class="category">
+                <div class="category-title">
+                    <span class="icon">📈</span>
+                    <span>Retención y Churn</span>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Tasa de Retención</div>
+                    <div class="metric-desc">% de clientes iniciales que siguen activos en el mes. Meta: >90%. Indicador de satisfacción.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Tasa de Churn</div>
+                    <div class="metric-desc">% de clientes perdidos en el mes. Inverso de retención. Meta: <5%. Señal de riesgo.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Churn Bruto</div>
+                    <div class="metric-desc">MRR perdido en el mes respecto a inicio de mes. Valor en $ de clientes que se van.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Churn Neto</div>
+                    <div class="metric-desc">MRR perdido menos MRR ganado. (Churn Bruto - Expansión). Meta: <0 (crecimiento por retención).</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Riesgo de Concentración</div>
+                    <div class="metric-desc">% de ingresos del cliente más grande. Meta: <10%. Reduce riesgo de churn catastrófico.</div>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA 5: CRECIMIENTO Y BURN -->
+            <div class="category">
+                <div class="category-title">
+                    <span class="icon">🚀</span>
+                    <span>Crecimiento y Burn</span>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">MoM Growth Rate</div>
+                    <div class="metric-desc">Tasa de Crecimiento Mes a Mes. (MRR actual - MRR anterior) / MRR anterior. Velocidad de crecimiento mensual.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">CMGR</div>
+                    <div class="metric-desc">Tasa de Crecimiento Mensual Compuesta. Crecimiento promedio mes a mes en un período. Normaliza variación.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Burn Rate</div>
+                    <div class="metric-desc">Velocidad de gasto mensual de efectivo. Cuántos meses de caja quedan (Caja / Burn Rate).</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Runway</div>
+                    <div class="metric-desc">Meses de operación con caja actual. Caja disponible / Burn Rate mensual. Meta: >12 meses.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Proyección MRR</div>
+                    <div class="metric-desc">MRR proyectado a futuro basado en tendencia actual. MRR actual × (1 + CMGR)^meses.</div>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA 6: OTRAS MÉTRICAS CRÍTICAS -->
+            <div class="category">
+                <div class="category-title">
+                    <span class="icon">⚙️</span>
+                    <span>Métricas Complementarias</span>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">CAC Payback</div>
+                    <div class="metric-desc">Meses para recuperar inversión en adquisición. CAC / (ARPA × (1-Churn)). Meta: <12 meses.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">NPS (Net Promoter Score)</div>
+                    <div class="metric-desc">Satisfacción de cliente. % Promotores - % Detractores. Meta: >50. Predice retención.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Magic Number</div>
+                    <div class="metric-desc">Eficiencia de crecimiento. (MRR nuevo / Gasto marketing anterior). Meta: >0.75. Crecimiento sostenible.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Gross Margin</div>
+                    <div class="metric-desc">Margen Bruto. (Ingresos - COGS) / Ingresos. Rentabilidad de producto.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Rule of 40</div>
+                    <div class="metric-desc">Crecimiento (%) + Rentabilidad (%) ≥ 40. Indica salud de la empresa. >40 = excelente.</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-name">Ratio Debt to Revenue</div>
+                    <div class="metric-desc">Deuda total / Ingresos anuales. Sostenibilidad financiera. Meta: <1.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📌 <strong>Pro Tip:</strong> No rastrées todas. Elige 5-7 métricas clave según tu etapa y sé obsesivo con ellas.</p>
+        </div>
+    </div>
+</body>
+</html>
